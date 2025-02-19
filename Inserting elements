@@ -1,0 +1,84 @@
+public class Main {
+//		   public static void main(String[] args) {
+//		       // JDBC Connection parameters for Oracle database
+		       String jdbcUrl = "jdbc:oracle:thin:@localhost:1521:xe"; // Adjust for your database details
+		       String jdbcUsername = "system";  // Replace with your Oracle DB username
+		       String jdbcPassword = "root";    // Replace with your Oracle DB password
+		       
+		       // Scanner to take dynamic inputs
+		       try (
+		               Scanner scanner = new Scanner(System.in);
+		               Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
+		               Statement statement = connection.createStatement();
+		           ) {
+
+		           // Loop to insert multiple employee records
+		           while (true) {
+		               // Taking input for the Patient record
+		               System.out.print("Patient ID       : ");
+		               int patientId = scanner.nextInt();
+
+		               System.out.print("Patient Name     : ");
+		               String patientName = scanner.next();
+
+		               System.out.print("Mobile           : ");
+		               long mobile = scanner.nextLong();
+
+		               System.out.print("Issue            : ");
+		               String issue = scanner.next();
+
+		               System.out.print("Email            : ");
+		               String email = scanner.next();
+
+		               // Create SQL query to insert the new record into the Hospital table
+		               String query = "INSERT INTO Hospital (PATIENT_ID, PATIENT_NAME, MOBILE, ISSUE, EMAIL) " +
+		                              "VALUES (" + patientId + ", '" + patientName + "', " + mobile + ", '" + issue + "', '" + email + "')";
+		               
+		               // Execute the insert query
+		               int rowCount = statement.executeUpdate(query);
+		               
+		               // Provide feedback to the user
+		               if (rowCount == 1) {
+		                   System.out.println("Patient " + patientId + " inserted successfully.");
+		               } else {
+		                   System.out.println("Insertion failed for Patient " + patientId);
+		               }
+
+		               // Ask if the user wants to insert more records
+		               System.out.print("Insert another patient? [Yes/No]: ");
+		               String nextPatientOption = scanner.next();
+
+		               if (nextPatientOption.equalsIgnoreCase("no")) {
+		                   break;
+		               }
+		           }
+
+		       } catch (Exception e) {
+		           e.printStackTrace();
+		       }
+		   }
+		
+
+	}
+
+
+
+output:
+select* from hospital
+  2  ;
+
+PATIENT_ID PATIENT_NAME        MOBILE ISSUE           EMAIL
+---------- --------------- ---------- --------------- ---------------
+         1 Anil              77777777 Fever           anil@gmail.com
+         1 Anil              77777777 fever           Anil@gmail.com
+         1 Mounika             777777 fever           mouni@gmail.com
+         1 Mounika             777333 fever           mouni@gmail.com
+
+SQL> delete Hospital
+  2  ;
+
+4 rows deleted.
+
+SQL> select * from hospital;
+
+no rows selected
